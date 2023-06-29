@@ -21,40 +21,29 @@ const Home = () => {
     const isLoading = useSelector((state) => state.order.loading);
     const [filteredResults, setFilteredResults] = useState(orders)
 
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [filterTodayOrders, setFilterTodayOrders] = useState(true);
+
 
     const filterOrdersByDateRange = (orders, startDate, endDate) => {
         const filteredOrders = orders.filter((order) => {
             const orderDate = new Date(order.date);
-
-            // If no start date is provided, default to today
             const rangeStartDate = startDate ? new Date(startDate) : new Date();
-
-            // If no end date is provided, default to today
             const rangeEndDate = endDate ? new Date(endDate) : new Date();
-
-            // Adjust the time of the rangeEndDate to the end of the day
             rangeEndDate.setHours(23, 59, 59, 999);
-
             return orderDate >= rangeStartDate && orderDate <= rangeEndDate;
         });
-
-        console.log(filteredOrders)
-
         return filteredOrders;
     };
 
     const handleFilter = () => {
-        // Pass the orders, startDate, and endDate to the filterOrdersByDateRange function
-        console.log(startDate, endDate)
-
-        const filteredOrders = filterOrdersByDateRange(orders, startDate, endDate);
-        // Do something with the filtered orders
-        console.log(filteredOrders);
+        if (startDate && endDate) {
+            const filteredOrders = filterOrdersByDateRange(orders, startDate, endDate);
+            console.log(filteredOrders);
+            setFilteredResults(filteredOrders)
+        }
     };
-
-    const [filterTodayOrders, setFilterTodayOrders] = useState(true)
 
     useEffect(() => {
         dispatch(fetchOrders());
@@ -62,61 +51,49 @@ const Home = () => {
 
     useEffect(() => {
         if (filterTodayOrders) {
-            const today = new Date().toLocaleDateString()
-        
-        console.log(today)
-        console.log(filterTodayOrders)
-        const filteredTodayOrders = orders && orders.filter((order) => {
-            const orderDate = new Date(order.date).toLocaleDateString();
-
-            console.log(orderDate)
-            return today === orderDate
-
-        })
-
-        setFilteredResults(filteredTodayOrders)
-
-        console.log(filteredTodayOrders)
-
+            const today = new Date().toLocaleDateString();
+            const filteredTodayOrders = orders && orders.filter((order) => {
+                const orderDate = new Date(order.date).toLocaleDateString();
+                return today === orderDate;
+            })
+            setFilteredResults(filteredTodayOrders);
         } else {
-            setFilteredResults(orders)
+            setFilteredResults(orders);
         }
-        
-
-
     }, [filterTodayOrders, orders])
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
-    console.log(orders)
-    console.log(filteredResults)
+
     return (
         <div>
             <header>
                 <h1>Order List</h1>
             </header>
             <div>
-                <div>
-                <div>
-                    <label>From: </label>
-                    <input
-                        type="date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                    />
+                <div className="filter-range__container">
+                    <div>
+                        <label>From: </label>
+                        <input
+                            type="date"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label>To: </label>
+                        <input
+                            type="date"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <button onClick={handleFilter}>Filter</button>
+                    </div>
                 </div>
-                <div>
-                    <label>To: </label>
-                    <input
-                        type="date"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
-                    />
-                </div>
-                <button onClick={handleFilter}>Filter</button>
-                </div>
-                
+
                 <label>
                     <input
                         type="checkbox"
@@ -131,6 +108,7 @@ const Home = () => {
                 <table className="order-list">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Order</th>
                             <th>Products</th>
                             <th>Quantity</th>
@@ -138,8 +116,9 @@ const Home = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredResults.map((order) => (
+                        {filteredResults.map((order, i) => (
                             <tr key={order.orderId}>
+                                <td>{i}.</td>
                                 <td>#{order.orderId}</td>
                                 <td>
                                     {
@@ -164,11 +143,9 @@ const Home = () => {
                 <div>No orders found.</div>
             )}
             <footer>
-                <button onClick={() => navigate('/create')}>create order</button>
-                <button onClick={() => dispatch(logout())}>logout</button>
+                <button className="custom-button" onClick={() => navigate("/create")}>create order</button>
+                <button className="custom-button" onClick={() => dispatch(logout())}>logout</button>
             </footer>
-
-
         </div>
     );
 }

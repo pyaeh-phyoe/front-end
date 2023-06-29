@@ -5,7 +5,6 @@ import { fetchProducts, selectProduct, updateQuantity } from "../features/produc
 import { createOrder } from "../features/orderSlice";
 import "./create.css"
 
-
 const Create = () => {
     const user = useSelector((state) => state.auth.authorize);
     const navigate = useNavigate();
@@ -21,9 +20,9 @@ const Create = () => {
     const isLoading = useSelector((state) => state.product.loading);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
-
     const selectedProducts = useSelector((state) => state.product.selectedProducts);
-
+    const [orderDate, setOrderDate] = useState(new Date().toLocaleDateString());
+    const [orderStatus, setOrderStatus] = useState(null);
 
     const handleSearch = (event) => {
         const value = event.target.value;
@@ -56,12 +55,7 @@ const Create = () => {
         });
         console.log(updatedProducts)
         dispatch(updateQuantity(updatedProducts));
-
     }
-
-    const [orderDate, setOrderDate] = useState(new Date().toLocaleDateString());
-
-    const [orderStatus, setOrderStatus] = useState(null)
 
     const handleSubmitOrder = (event) => {
         event.preventDefault();
@@ -73,32 +67,26 @@ const Create = () => {
         };
         try {
             dispatch(createOrder(order));
-            setOrderStatus('success');
+            setOrderStatus("success");
         } catch (error) {
-            setOrderStatus('fail');
+            setOrderStatus("fail");
         }
     };
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setOrderStatus(null)
-          }, 1000);
-        
-          return () => {
-            clearTimeout(timer);
-          };
-    }, [orderStatus])
-
 
     const handleOrderDateSelect = (event) => {
         const selectedDate = event.target.value;
         setOrderDate(selectedDate);
     };
 
-
-
-
-
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setOrderStatus(null);
+          }, 1000);
+        
+          return () => {
+            clearTimeout(timer);
+          };
+    }, [orderStatus]);
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -111,8 +99,6 @@ const Create = () => {
     if (isLoading) {
         return <div>Loading...</div>;
     }
-
-
 
     return (
         <div className="container">
@@ -141,7 +127,6 @@ const Create = () => {
             <div className="right-panel">
                 <h1>Create Order</h1>
                 <form onSubmit={handleSubmitOrder}>
-
                     {selectedProducts.length > 0 && (
                         <div>
                             <h2>Selected Products:</h2>
@@ -171,16 +156,14 @@ const Create = () => {
 
                     )}
                     <div>
-                        {orderStatus === 'success' && <p>Order submitted successfully!</p>}
-                        {orderStatus === 'fail' && <p>Failed to submit the order. Please try again.</p>}
+                        {orderStatus === "success" && <p>Order submitted successfully!</p>}
+                        {orderStatus === "fail" && <p>Failed to submit the order. Please try again.</p>}
                     </div>
                     <div style={{ padding: "15px" }}>
-                        <button type="submit" disabled={selectedProducts.length === 0}>
+                        <button className="custom-button" type="submit" disabled={selectedProducts.length === 0}>
                             Create Order
                         </button>
                     </div>
-
-
                 </form>
             </div>
 

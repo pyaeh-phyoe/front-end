@@ -4,3 +4,7 @@ main{
     flex-direction: column;
     justify-content: center;
 }
+
+.input-container {
+    padding: 10px 0px;
+}

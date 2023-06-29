@@ -18,8 +18,8 @@ const Auth = () => {
     return (
         <main>
             <form onSubmit={handleSubmit} className="login-form">
-                <div>
-                    <label htmlFor="email">UserName:</label>
+                <div className="input-container">
+                    <label htmlFor="email">UserName: </label>
                     <input
                         id="userName"
                         value={userName}
@@ -27,8 +27,8 @@ const Auth = () => {
                         required
                     />
                 </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
+                <div className="input-container">
+                    <label htmlFor="password">Password: </label>
                     <input
                         type="password"
                         id="password"
