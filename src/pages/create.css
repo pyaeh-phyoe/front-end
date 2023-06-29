@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+}
+
+.left-panel {
+    width: 100%;
+}
+
+.right-panel {
+    width: 100%;
+}
+
+.product-menu li {
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border: 1px solid;
+}
+
+.select-products li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 30px;
+}
+
+.selected {
+    background-color: #F9F9F9;
+}
