@@ -13,7 +13,7 @@ const Home = () => {
 
     useEffect(() => {
         if (!user) {
-            navigate('/login')
+            navigate("/login")
         }
     }, [user])
 

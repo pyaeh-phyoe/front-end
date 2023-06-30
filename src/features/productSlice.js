@@ -1,13 +1,10 @@
-// productSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Define the async thunk for fetching products
 export const fetchProducts = createAsyncThunk(
-    'products/fetchProducts',
+    "products/fetchProducts",
     async () => {
         const response = await fetch("https://quaint-gold-goldfish.cyclic.app/products");
         const data = await response.json();
-        console.log(data)
         return data;
     }
 );

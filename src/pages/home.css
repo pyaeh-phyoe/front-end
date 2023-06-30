@@ -1,4 +1,19 @@
-.filter-range__container {
+
+.order-list {
+    padding: 20px 0px;
+    width: 100%;
+  }
+  
+  .order-list td {
+    padding-bottom: 15px;
+    vertical-align: baseline;
+  }
+  
+  .order-list th {
+    padding-bottom: 20px;
+  }
+  
+  .filter-range__container {
     display: flex;
     justify-content: space-evenly;
     padding: 15px;

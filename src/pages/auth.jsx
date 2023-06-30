@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from '../features/authSlice';
+import { login } from "../features/authSlice";
 import "./auth.css"
 
 const Auth = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [userName, setUserName] = useState('');
-    const [password, setPassword] = useState('');
+    const [userName, setUserName] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(login({ userName, password }));
-        navigate('/');
+        navigate("/");
     };
     return (
         <main>
